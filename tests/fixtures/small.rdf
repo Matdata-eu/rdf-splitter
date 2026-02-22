@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ex="http://example.org/">
+  <rdf:Description rdf:about="http://example.org/s1">
+    <ex:p rdf:resource="http://example.org/o1"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s2">
+    <ex:p rdf:resource="http://example.org/o2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s3">
+    <ex:p rdf:resource="http://example.org/o3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s4">
+    <ex:p rdf:resource="http://example.org/o4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s5">
+    <ex:p rdf:resource="http://example.org/o5"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s6">
+    <ex:p rdf:resource="http://example.org/o6"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s7">
+    <ex:p rdf:resource="http://example.org/o7"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s8">
+    <ex:p rdf:resource="http://example.org/o8"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s9">
+    <ex:p rdf:resource="http://example.org/o9"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://example.org/s10">
+    <ex:p rdf:resource="http://example.org/o10"/>
+  </rdf:Description>
+</rdf:RDF>

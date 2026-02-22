@@ -1,0 +1,12 @@
+[
+  {"@id": "http://example.org/s1",  "http://example.org/p": [{"@id": "http://example.org/o1"}]},
+  {"@id": "http://example.org/s2",  "http://example.org/p": [{"@id": "http://example.org/o2"}]},
+  {"@id": "http://example.org/s3",  "http://example.org/p": [{"@id": "http://example.org/o3"}]},
+  {"@id": "http://example.org/s4",  "http://example.org/p": [{"@id": "http://example.org/o4"}]},
+  {"@id": "http://example.org/s5",  "http://example.org/p": [{"@id": "http://example.org/o5"}]},
+  {"@id": "http://example.org/s6",  "http://example.org/p": [{"@id": "http://example.org/o6"}]},
+  {"@id": "http://example.org/s7",  "http://example.org/p": [{"@id": "http://example.org/o7"}]},
+  {"@id": "http://example.org/s8",  "http://example.org/p": [{"@id": "http://example.org/o8"}]},
+  {"@id": "http://example.org/s9",  "http://example.org/p": [{"@id": "http://example.org/o9"}]},
+  {"@id": "http://example.org/s10", "http://example.org/p": [{"@id": "http://example.org/o10"}]}
+]
