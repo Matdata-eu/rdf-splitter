@@ -35,14 +35,11 @@ jobs:
           path: ~/.cargo/git
           key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
       
-      - name: Verify version matches tag
+      - name: Set version from release tag
         run: |
           TAG_VERSION=${GITHUB_REF#refs/tags/v}
-          CARGO_VERSION=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
-          if [ "$TAG_VERSION" != "$CARGO_VERSION" ]; then
-            echo "Tag version ($TAG_VERSION) does not match Cargo.toml version ($CARGO_VERSION)"
-            exit 1
-          fi
+          sed -i "0,/^version = /s/^version = \"[^\"]*\"/version = \"$TAG_VERSION\"/" Cargo.toml
+          echo "Set Cargo.toml version to $TAG_VERSION"
       
       - name: Run tests
         run: cargo test --all-features --workspace
