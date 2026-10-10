@@ -2,12 +2,12 @@
 name = "rdfsplitter"
 version = "0.1.0"
 edition = "2021"
-authors = ["rdfsplitter contributors"]
+authors = ["Mathias Vanden Auweele <mathias@matdata.eu>"]
 description = "Split large RDF files (Turtle, N-Triples, RDF/XML, JSON-LD, …) into smaller chunks"
 license = "MIT"
 repository = "https://github.com/matdata-eu/rdf-splitter"
 homepage = "https://github.com/matdata-eu/rdf-splitter"
-documentation = "https://docs.rs/rdf-splitter"
+documentation = "https://docs.rs/rdfsplitter"
 keywords = ["rdf", "turtle", "n-triples", "linked-data", "cli"]
 categories = ["command-line-utilities", "parsing"]
 readme = "README.md"

@@ -1,0 +1,33 @@
+{{!-- Template for cargo-about. Regenerate THIRD_PARTY_NOTICES.md with:
+       cargo about generate about.hbs -o THIRD_PARTY_NOTICES.md --}}
+# Third-party notices
+
+rdfsplitter is © 2026 Matdata (Mathias Vanden Auweele), licensed under the
+[MIT License](LICENSE). Source code, questions, bug reports and feature
+requests: <https://github.com/Matdata-eu/rdf-splitter/issues>.
+
+The rdfsplitter binary includes the third-party Rust crates listed below.
+Their license terms follow.
+
+## Rust crates
+
+Licenses used by the Rust crates compiled into the binary:
+
+{{#each overview}}
+- {{{name}}} ({{count}})
+{{/each}}
+
+{{#each licenses}}
+### {{{name}}}
+
+Used by:
+
+{{#each used_by}}
+- [{{crate.name}} {{crate.version}}]({{#if crate.repository}}{{crate.repository}}{{else}}https://crates.io/crates/{{crate.name}}{{/if}})
+{{/each}}
+
+```
+{{{text}}}
+```
+
+{{/each}}
