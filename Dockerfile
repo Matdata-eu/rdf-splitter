@@ -22,6 +22,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /build/target/release/rdfsplitter /usr/local/bin/rdfsplitter
+COPY LICENSE THIRD_PARTY_NOTICES.md /usr/share/doc/rdfsplitter/
 
 WORKDIR /data
 

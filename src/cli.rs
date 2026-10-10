@@ -11,7 +11,7 @@ use std::path::PathBuf;
     version,
     about,
     long_about = None,
-    after_help = "EXAMPLES:\n  rdfsplitter data.ttl -n 1000\n  rdfsplitter data.ttl -c 4\n  rdfsplitter *.nt -n 5000 -o out/ -f\n  rdfsplitter -r src/ -c 10 -o split/"
+    after_help = "EXAMPLES:\n  rdfsplitter data.ttl -n 1000\n  rdfsplitter data.ttl -c 4\n  rdfsplitter *.nt -n 5000 -o out/ -f\n  rdfsplitter -r src/ -c 10 -o split/\n\nQuestions, bug reports and feature requests: https://github.com/Matdata-eu/rdf-splitter/issues"
 )]
 pub struct Cli {
     /// Input file(s) or glob patterns (e.g. *.ttl, data/**/*.nt)
