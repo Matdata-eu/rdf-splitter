@@ -1,0 +1,49 @@
+publiccodeYmlVersion: '0'
+name: rdfsplitter
+url: https://github.com/Matdata-eu/rdf-splitter
+landingURL: https://matdata-eu.github.io/rdf-splitter/
+softwareVersion: 1.0.0
+releaseDate: '2026-02-22'
+platforms:
+- linux
+- windows
+- mac
+categories:
+- data-analytics
+- knowledge-management
+developmentStatus: stable
+softwareType: standalone/other
+organisation:
+  uri: https://matdata.eu
+  name: Matdata
+intendedAudience:
+  scope:
+  - government
+  - science-and-technology
+  - infrastructures
+  - transportation
+description:
+  en:
+    shortDescription: Splits large RDF files into smaller valid chunks.
+    longDescription: |
+      rdfsplitter splits RDF files that are too large for an editor, a validator or an upload limit into smaller files that are each valid RDF.
+
+      It reads Turtle, N-Triples, N-Quads, TriG, RDF/XML and JSON-LD. Files can be split by a number of triples per chunk or into a fixed number of files, and whole directory trees can be processed at once. It is available as a Rust crate and as a Docker image.
+    documentation: https://matdata-eu.github.io/rdf-splitter/
+    features:
+    - Turtle, N-Triples, N-Quads, TriG, RDF/XML and JSON-LD input
+    - Split by triple count or number of files
+    - Recursive processing of directories
+    - Available as a crate and a Docker image
+legal:
+  license: MIT
+  mainCopyrightOwner: Matdata
+maintenance:
+  type: internal
+  contacts:
+  - name: Mathias Vanden Auweele
+    affiliation: Matdata
+localisation:
+  localisationReady: false
+  availableLanguages:
+  - en
