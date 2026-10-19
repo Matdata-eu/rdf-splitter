@@ -35,8 +35,7 @@ fn main() {
 
 fn run(cli: Cli) -> Result<(), SplitterError> {
     // Expand glob patterns / directories into concrete file paths
-    let files = expand_inputs(&cli.inputs, cli.recursive)
-        .map_err(SplitterError::Other)?;
+    let files = expand_inputs(&cli.inputs, cli.recursive).map_err(SplitterError::Other)?;
 
     if files.is_empty() {
         return Err(SplitterError::Parse(
@@ -52,10 +51,7 @@ fn run(cli: Cli) -> Result<(), SplitterError> {
         let fmt = match RdfFormat::from_path(path) {
             Some(f) => f,
             None => {
-                log::warn!(
-                    "Skipping '{}': unrecognised RDF extension",
-                    path.display()
-                );
+                log::warn!("Skipping '{}': unrecognised RDF extension", path.display());
                 continue;
             }
         };
@@ -71,7 +67,7 @@ fn run(cli: Cli) -> Result<(), SplitterError> {
                 log::info!("Counting records in {} …", path.display());
                 match splitter::count_records(path, fmt) {
                     Ok(total) => {
-                        let cs = (total + fc - 1) / fc; // ceiling division
+                        let cs = total.div_ceil(fc); // ceiling division
                         log::debug!("  {} records → chunk size {}", total, cs);
                         cs.max(1)
                     }

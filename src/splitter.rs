@@ -49,50 +49,70 @@ pub fn count_records(input: &Path, fmt: RdfFormat) -> Result<usize, SplitterErro
     match fmt {
         RdfFormat::NTriples => {
             let mut p = NTriplesParser::new(reader);
-            p.parse_all(&mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
-                n += 1;
-                if n % PROGRESS_INTERVAL == 0 { show_progress(n); }
-                Ok(())
-            })
+            p.parse_all(
+                &mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
+                    n += 1;
+                    if n.is_multiple_of(PROGRESS_INTERVAL) {
+                        show_progress(n);
+                    }
+                    Ok(())
+                },
+            )
             .map_err(|e| SplitterError::Parse(e.to_string()))?;
         }
         RdfFormat::Turtle => {
             let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
             let mut p = TurtleParser::new(reader, Some(base));
-            p.parse_all(&mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
-                n += 1;
-                if n % PROGRESS_INTERVAL == 0 { show_progress(n); }
-                Ok(())
-            })
+            p.parse_all(
+                &mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
+                    n += 1;
+                    if n.is_multiple_of(PROGRESS_INTERVAL) {
+                        show_progress(n);
+                    }
+                    Ok(())
+                },
+            )
             .map_err(|e| SplitterError::Parse(e.to_string()))?;
         }
         RdfFormat::RdfXml => {
             let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
             let mut p = RdfXmlParser::new(reader, Some(base));
-            p.parse_all(&mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
-                n += 1;
-                if n % PROGRESS_INTERVAL == 0 { show_progress(n); }
-                Ok(())
-            })
+            p.parse_all(
+                &mut |_: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
+                    n += 1;
+                    if n.is_multiple_of(PROGRESS_INTERVAL) {
+                        show_progress(n);
+                    }
+                    Ok(())
+                },
+            )
             .map_err(|e| SplitterError::Parse(e.to_string()))?;
         }
         RdfFormat::NQuads => {
             let mut p = NQuadsParser::new(reader);
-            p.parse_all(&mut |_: rio_api::model::Quad<'_>| -> Result<(), CallbackError> {
-                n += 1;
-                if n % PROGRESS_INTERVAL == 0 { show_progress(n); }
-                Ok(())
-            })
+            p.parse_all(
+                &mut |_: rio_api::model::Quad<'_>| -> Result<(), CallbackError> {
+                    n += 1;
+                    if n.is_multiple_of(PROGRESS_INTERVAL) {
+                        show_progress(n);
+                    }
+                    Ok(())
+                },
+            )
             .map_err(|e| SplitterError::Parse(e.to_string()))?;
         }
         RdfFormat::TriG => {
             let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
             let mut p = TriGParser::new(reader, Some(base));
-            p.parse_all(&mut |_: rio_api::model::Quad<'_>| -> Result<(), CallbackError> {
-                n += 1;
-                if n % PROGRESS_INTERVAL == 0 { show_progress(n); }
-                Ok(())
-            })
+            p.parse_all(
+                &mut |_: rio_api::model::Quad<'_>| -> Result<(), CallbackError> {
+                    n += 1;
+                    if n.is_multiple_of(PROGRESS_INTERVAL) {
+                        show_progress(n);
+                    }
+                    Ok(())
+                },
+            )
             .map_err(|e| SplitterError::Parse(e.to_string()))?;
         }
         RdfFormat::JsonLd => {
@@ -165,7 +185,9 @@ fn split_triples(
         let mut on_triple = |t: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
             triples.push(OwnedTriple::from_rio(&t));
             parsed += 1;
-            if parsed % PROGRESS_INTERVAL == 0 { show_progress(parsed); }
+            if parsed.is_multiple_of(PROGRESS_INTERVAL) {
+                show_progress(parsed);
+            }
             if triples.len() >= opts.chunk_size {
                 flush(&mut triples, &mut chunk, &mut total, &mut flush_err);
             }
@@ -180,16 +202,14 @@ fn split_triples(
                     .map_err(|e| SplitterError::Parse(e.to_string()))?;
             }
             RdfFormat::Turtle => {
-                let base = Iri::parse(base_str)
-                    .map_err(|e| SplitterError::Parse(e.to_string()))?;
+                let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
                 let mut parser = TurtleParser::new(reader, Some(base));
                 parser
                     .parse_all(&mut on_triple)
                     .map_err(|e| SplitterError::Parse(e.to_string()))?;
             }
             RdfFormat::RdfXml => {
-                let base = Iri::parse(base_str)
-                    .map_err(|e| SplitterError::Parse(e.to_string()))?;
+                let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
                 let mut parser = RdfXmlParser::new(reader, Some(base));
                 parser
                     .parse_all(&mut on_triple)
@@ -236,11 +256,7 @@ fn write_triple_chunk(
 
 // ─── quad-based formats ─────────────────────────────────────────────────────
 
-fn split_quads(
-    input: &Path,
-    fmt: RdfFormat,
-    opts: &SplitOptions,
-) -> Result<usize, SplitterError> {
+fn split_quads(input: &Path, fmt: RdfFormat, opts: &SplitOptions) -> Result<usize, SplitterError> {
     let base_str = file_base_iri(input);
 
     let mut quads: Vec<OwnedQuad> = Vec::with_capacity(opts.chunk_size);
@@ -275,7 +291,9 @@ fn split_quads(
         let mut on_quad = |q: rio_api::model::Quad<'_>| -> Result<(), CallbackError> {
             quads.push(OwnedQuad::from_rio(&q));
             parsed += 1;
-            if parsed % PROGRESS_INTERVAL == 0 { show_progress(parsed); }
+            if parsed.is_multiple_of(PROGRESS_INTERVAL) {
+                show_progress(parsed);
+            }
             if quads.len() >= opts.chunk_size {
                 flush(&mut quads, &mut chunk, &mut total, &mut flush_err);
             }
@@ -290,8 +308,7 @@ fn split_quads(
                     .map_err(|e| SplitterError::Parse(e.to_string()))?;
             }
             RdfFormat::TriG => {
-                let base = Iri::parse(base_str)
-                    .map_err(|e| SplitterError::Parse(e.to_string()))?;
+                let base = Iri::parse(base_str).map_err(|e| SplitterError::Parse(e.to_string()))?;
                 let mut parser = TriGParser::new(reader, Some(base));
                 parser
                     .parse_all(&mut on_quad)
@@ -378,15 +395,19 @@ fn split_jsonld_file(input: &Path, opts: &SplitOptions) -> Result<usize, Splitte
     let mut parsed = 0usize;
     let mut parser = NTriplesParser::new(reader);
     parser
-        .parse_all(&mut |t: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
-            triples.push(OwnedTriple::from_rio(&t));
-            parsed += 1;
-            if parsed % PROGRESS_INTERVAL == 0 { show_progress(parsed); }
-            if triples.len() >= opts.chunk_size {
-                flush(&mut triples, &mut chunk, &mut total, &mut flush_err);
-            }
-            Ok(())
-        })
+        .parse_all(
+            &mut |t: rio_api::model::Triple<'_>| -> Result<(), CallbackError> {
+                triples.push(OwnedTriple::from_rio(&t));
+                parsed += 1;
+                if parsed.is_multiple_of(PROGRESS_INTERVAL) {
+                    show_progress(parsed);
+                }
+                if triples.len() >= opts.chunk_size {
+                    flush(&mut triples, &mut chunk, &mut total, &mut flush_err);
+                }
+                Ok(())
+            },
+        )
         .map_err(|e| SplitterError::Parse(e.to_string()))?;
     clear_progress();
 
@@ -410,8 +431,7 @@ fn split_jsonld_file(input: &Path, opts: &SplitOptions) -> Result<usize, Splitte
 /// Convert JSON-LD string to N-Triples via serde_json structural walk.
 fn jsonld_to_ntriples(raw: &str) -> Result<String, SplitterError> {
     use serde_json::Value;
-    let v: Value =
-        serde_json::from_str(raw).map_err(|e| SplitterError::Parse(e.to_string()))?;
+    let v: Value = serde_json::from_str(raw).map_err(|e| SplitterError::Parse(e.to_string()))?;
 
     let mut out = String::new();
     match &v {
@@ -446,10 +466,7 @@ fn extract_node(node: &serde_json::Value, graph: Option<&str>, out: &mut String)
     };
 
     if let Some(Value::Array(graph_nodes)) = obj.get("@graph") {
-        let g = obj
-            .get("@id")
-            .and_then(|v| v.as_str())
-            .map(|s| expand_iri(s));
+        let g = obj.get("@id").and_then(|v| v.as_str()).map(expand_iri);
         for n in graph_nodes {
             extract_node(n, g.as_deref(), out);
         }
@@ -500,11 +517,7 @@ fn jsonld_value_to_nt_object(key: &str, val: &serde_json::Value) -> Option<Strin
                 return Some(format!(r#""{}"@{}"#, nt_escape(value), lang));
             }
             if let Some(dt) = m.get("@type").and_then(|v| v.as_str()) {
-                return Some(format!(
-                    r#""{}"^^{}"#,
-                    nt_escape(value),
-                    expand_iri(dt)
-                ));
+                return Some(format!(r#""{}"^^{}"#, nt_escape(value), expand_iri(dt)));
             }
             Some(format!(r#""{}""#, nt_escape(value)))
         }
@@ -539,9 +552,7 @@ fn nt_escape(s: &str) -> String {
 
 fn file_base_iri(path: &Path) -> String {
     // Produce a valid file:/// IRI usable as RDF base
-    let abs = path
-        .canonicalize()
-        .unwrap_or_else(|_| path.to_path_buf());
+    let abs = path.canonicalize().unwrap_or_else(|_| path.to_path_buf());
     let s = abs.display().to_string().replace('\\', "/");
     if s.starts_with('/') {
         format!("file://{s}")

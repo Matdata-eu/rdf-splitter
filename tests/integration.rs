@@ -104,10 +104,7 @@ fn nt_first_chunk_has_correct_triple_count() {
         .assert()
         .success();
     let content = fs::read_to_string(dir.path().join("small_0000.nt")).unwrap();
-    let triple_lines = content
-        .lines()
-        .filter(|l| !l.trim().is_empty())
-        .count();
+    let triple_lines = content.lines().filter(|l| !l.trim().is_empty()).count();
     assert_eq!(triple_lines, 4);
 }
 
@@ -120,10 +117,7 @@ fn nt_last_chunk_contains_remainder() {
         .assert()
         .success();
     let content = fs::read_to_string(dir.path().join("small_0003.nt")).unwrap();
-    let triple_lines = content
-        .lines()
-        .filter(|l| !l.trim().is_empty())
-        .count();
+    let triple_lines = content.lines().filter(|l| !l.trim().is_empty()).count();
     assert_eq!(triple_lines, 1);
 }
 
@@ -253,8 +247,10 @@ fn force_creates_missing_output_directory() {
     cmd()
         .args([
             &fixture("small.nt"),
-            "-n", "10",
-            "-o", sub.to_str().unwrap(),
+            "-n",
+            "10",
+            "-o",
+            sub.to_str().unwrap(),
             "-f",
         ])
         .assert()
@@ -267,7 +263,13 @@ fn no_force_fails_when_output_directory_is_missing() {
     let dir = TempDir::new().unwrap();
     let sub = dir.path().join("nonexistent");
     cmd()
-        .args([&fixture("small.nt"), "-n", "10", "-o", sub.to_str().unwrap()])
+        .args([
+            &fixture("small.nt"),
+            "-n",
+            "10",
+            "-o",
+            sub.to_str().unwrap(),
+        ])
         .assert()
         .failure();
 }
@@ -307,7 +309,15 @@ fn force_overwrites_existing_output_files() {
 fn verbose_flag_prints_debug_info() {
     let dir = TempDir::new().unwrap();
     cmd()
-        .args([&fixture("small.nt"), "-n", "10", "-o", &out(&dir), "-f", "-v"])
+        .args([
+            &fixture("small.nt"),
+            "-n",
+            "10",
+            "-o",
+            &out(&dir),
+            "-f",
+            "-v",
+        ])
         .assert()
         .success()
         .stderr(predicate::str::contains("writing chunk"));
@@ -348,10 +358,7 @@ fn without_recursive_flag_subdir_is_not_walked() {
 #[test]
 fn glob_star_nt_matches_all_nt_fixtures() {
     let dir = TempDir::new().unwrap();
-    let pat = format!(
-        "{}/tests/fixtures/*.nt",
-        env!("CARGO_MANIFEST_DIR")
-    );
+    let pat = format!("{}/tests/fixtures/*.nt", env!("CARGO_MANIFEST_DIR"));
     cmd()
         .args([&pat, "-n", "100", "-o", &out(&dir), "-f"])
         .assert()
@@ -368,9 +375,12 @@ fn chunk_size_and_file_count_are_mutually_exclusive() {
     cmd()
         .args([
             &fixture("small.nt"),
-            "-n", "10",
-            "-c", "2",
-            "-o", &out(&dir),
+            "-n",
+            "10",
+            "-c",
+            "2",
+            "-o",
+            &out(&dir),
         ])
         .assert()
         .failure()
@@ -397,8 +407,10 @@ fn multiple_input_files_all_split() {
         .args([
             &fixture("small.nt"),
             &fixture("small.ttl"),
-            "-n", "5",
-            "-o", &out(&dir),
+            "-n",
+            "5",
+            "-o",
+            &out(&dir),
             "-f",
         ])
         .assert()

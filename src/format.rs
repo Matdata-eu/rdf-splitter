@@ -103,16 +103,16 @@ mod tests {
     #[test]
     fn detect_format_from_all_supported_extensions() {
         let cases: &[(&str, RdfFormat)] = &[
-            ("file.ttl",    RdfFormat::Turtle),
-            ("file.nt",     RdfFormat::NTriples),
-            ("file.nq",     RdfFormat::NQuads),
+            ("file.ttl", RdfFormat::Turtle),
+            ("file.nt", RdfFormat::NTriples),
+            ("file.nq", RdfFormat::NQuads),
             ("file.nquads", RdfFormat::NQuads),
-            ("file.trig",   RdfFormat::TriG),
-            ("file.rdf",    RdfFormat::RdfXml),
-            ("file.owl",    RdfFormat::RdfXml),
-            ("file.xml",    RdfFormat::RdfXml),
+            ("file.trig", RdfFormat::TriG),
+            ("file.rdf", RdfFormat::RdfXml),
+            ("file.owl", RdfFormat::RdfXml),
+            ("file.xml", RdfFormat::RdfXml),
             ("file.jsonld", RdfFormat::JsonLd),
-            ("file.json",   RdfFormat::JsonLd),
+            ("file.json", RdfFormat::JsonLd),
         ];
         for (filename, expected) in cases {
             assert_eq!(
@@ -125,17 +125,32 @@ mod tests {
 
     #[test]
     fn detect_format_is_case_insensitive() {
-        assert_eq!(RdfFormat::from_path(Path::new("A.TTL")),    Some(RdfFormat::Turtle));
-        assert_eq!(RdfFormat::from_path(Path::new("A.NT")),     Some(RdfFormat::NTriples));
-        assert_eq!(RdfFormat::from_path(Path::new("A.JSONLD")), Some(RdfFormat::JsonLd));
-        assert_eq!(RdfFormat::from_path(Path::new("A.NQ")),     Some(RdfFormat::NQuads));
-        assert_eq!(RdfFormat::from_path(Path::new("A.RDF")),    Some(RdfFormat::RdfXml));
+        assert_eq!(
+            RdfFormat::from_path(Path::new("A.TTL")),
+            Some(RdfFormat::Turtle)
+        );
+        assert_eq!(
+            RdfFormat::from_path(Path::new("A.NT")),
+            Some(RdfFormat::NTriples)
+        );
+        assert_eq!(
+            RdfFormat::from_path(Path::new("A.JSONLD")),
+            Some(RdfFormat::JsonLd)
+        );
+        assert_eq!(
+            RdfFormat::from_path(Path::new("A.NQ")),
+            Some(RdfFormat::NQuads)
+        );
+        assert_eq!(
+            RdfFormat::from_path(Path::new("A.RDF")),
+            Some(RdfFormat::RdfXml)
+        );
     }
 
     #[test]
     fn unknown_extension_returns_none() {
-        assert_eq!(RdfFormat::from_path(Path::new("file.txt")),  None);
-        assert_eq!(RdfFormat::from_path(Path::new("file.csv")),  None);
+        assert_eq!(RdfFormat::from_path(Path::new("file.txt")), None);
+        assert_eq!(RdfFormat::from_path(Path::new("file.csv")), None);
         assert_eq!(RdfFormat::from_path(Path::new("no_extension")), None);
     }
 

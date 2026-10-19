@@ -42,20 +42,14 @@ impl OwnedQuad {
 
 // ─── Writers ───────────────────────────────────────────────────────────────
 
-pub fn write_ntriples<W: Write>(
-    w: &mut W,
-    triples: &[OwnedTriple],
-) -> std::io::Result<()> {
+pub fn write_ntriples<W: Write>(w: &mut W, triples: &[OwnedTriple]) -> std::io::Result<()> {
     for t in triples {
         writeln!(w, "{} {} {} .", t.subject, t.predicate, t.object)?;
     }
     Ok(())
 }
 
-pub fn write_nquads<W: Write>(
-    w: &mut W,
-    quads: &[OwnedQuad],
-) -> std::io::Result<()> {
+pub fn write_nquads<W: Write>(w: &mut W, quads: &[OwnedQuad]) -> std::io::Result<()> {
     for q in quads {
         if let Some(g) = &q.graph_name {
             writeln!(
@@ -78,31 +72,19 @@ pub fn write_nquads<W: Write>(
 /// We serialise as N-Triples inside a .ttl file since N-Triples is a
 /// valid subset of Turtle, keeping the output parse-able with any Turtle
 /// parser while avoiding the complexity of prefix round-tripping.
-pub fn write_turtle<W: Write>(
-    w: &mut W,
-    triples: &[OwnedTriple],
-) -> std::io::Result<()> {
+pub fn write_turtle<W: Write>(w: &mut W, triples: &[OwnedTriple]) -> std::io::Result<()> {
     // N-Triples syntax is valid Turtle
     write_ntriples(w, triples)
 }
 
 /// Write a minimal valid TriG chunk (N-Quads is valid TriG).
-pub fn write_trig<W: Write>(
-    w: &mut W,
-    quads: &[OwnedQuad],
-) -> std::io::Result<()> {
+pub fn write_trig<W: Write>(w: &mut W, quads: &[OwnedQuad]) -> std::io::Result<()> {
     write_nquads(w, quads)
 }
 
 /// Write RDF/XML for a chunk of triples.
-pub fn write_rdfxml<W: Write>(
-    w: &mut W,
-    triples: &[OwnedTriple],
-) -> std::io::Result<()> {
-    writeln!(
-        w,
-        r#"<?xml version="1.0" encoding="utf-8"?>"#
-    )?;
+pub fn write_rdfxml<W: Write>(w: &mut W, triples: &[OwnedTriple]) -> std::io::Result<()> {
+    writeln!(w, r#"<?xml version="1.0" encoding="utf-8"?>"#)?;
     writeln!(
         w,
         r#"<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">"#
@@ -111,11 +93,7 @@ pub fn write_rdfxml<W: Write>(
         // subject
         let subj = strip_angles(&t.subject);
         let pred = strip_angles(&t.predicate);
-        writeln!(
-            w,
-            r#"  <rdf:Description rdf:about="{}">"#,
-            xml_escape(subj)
-        )?;
+        writeln!(w, r#"  <rdf:Description rdf:about="{}">"#, xml_escape(subj))?;
         if let Some(obj_iri) = try_strip_angles(&t.object) {
             writeln!(
                 w,
@@ -153,10 +131,7 @@ pub fn write_rdfxml<W: Write>(
 }
 
 /// Write JSON-LD for a chunk of triples (expanded form, no context).
-pub fn write_jsonld<W: Write>(
-    w: &mut W,
-    triples: &[OwnedTriple],
-) -> std::io::Result<()> {
+pub fn write_jsonld<W: Write>(w: &mut W, triples: &[OwnedTriple]) -> std::io::Result<()> {
     // Group by subject for a cleaner output
     use std::collections::BTreeMap;
     let mut map: BTreeMap<String, Vec<(&OwnedTriple, &str)>> = BTreeMap::new();
