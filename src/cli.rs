@@ -28,12 +28,7 @@ pub struct Cli {
     pub chunk_size: Option<usize>,
 
     /// Split into exactly N output files (requires a counting pass; conflicts with --chunk-size)
-    #[arg(
-        short = 'c',
-        long,
-        value_name = "FILES",
-        conflicts_with = "chunk_size"
-    )]
+    #[arg(short = 'c', long, value_name = "FILES", conflicts_with = "chunk_size")]
     pub file_count: Option<usize>,
 
     /// Output directory (defaults to current directory)
