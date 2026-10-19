@@ -1,0 +1,8 @@
+# Advisories cargo audit should not fail on. Each one needs a reason and a way out.
+[advisories]
+ignore = [
+    # quick-xml 0.36, pulled in by rio_xml. rio_xml is unmaintained, so the way out
+    # is moving the RDF/XML parser to oxrdfxml.
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
+]
